@@ -4,188 +4,404 @@
   <meta charset="UTF-8">
   <title>Collective Coin | Plinko</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap CSS (CDN) -->
-  <link 
+  <!-- Google Font: Orbitron for futuristic style -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
+  <!-- Bootstrap 5 (CDN) -->
+  <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
   />
+  <!-- Matter.js (CDN) -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"
+    integrity="sha512-E+5gCSqwKyf4tYg1nHAi8/c1kN3TEoO36Pw53i6gR+Fn6zN/8IX42EhdmdCQ7e5v2ceN25sykzoVHzlE8buhsA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
   <style>
-    body {
-      background-color: #7A2E2E;
-      color: #fff;
+    /* Global styles and flex layout */
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
-      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Orbitron', sans-serif;
     }
+    body {
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #0d0b3a, #511c76, #00bcd4, #ff0080);
+      background-size: 400% 400%;
+      animation: gradientAnimation 20s ease infinite;
+      color: #fff;
+    }
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+    }
+    /* Navbar */
     .navbar {
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      background-color: rgba(0, 0, 0, 0.3) !important;
+      box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+    }
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.7rem;
+      text-transform: uppercase;
+      color: #fff !important;
+    }
+    .nav-link {
+      color: #fff !important;
+      font-weight: 600;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover {
+      color: #00bcd4 !important;
+    }
+    .btn-custom {
+      background: linear-gradient(135deg, #00bcd4, #ff0080);
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+      transition: all 0.3s ease;
+    }
+    .btn-custom:hover {
+      box-shadow: 0 0 20px rgba(255, 0, 128, 0.7);
+      transform: scale(1.05);
     }
     footer {
-      background-color: #111;
+      background-color: rgba(0, 0, 0, 0.3);
       text-align: center;
-      padding: 1rem 0;
-      color: #fff;
-      margin-top: 2rem;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
     }
-    #plinkoBoard {
-      position: relative;
-      margin: auto;
-      width: 300px;
-      height: 400px;
+    /* Plinko container styling */
+    #plinkoContainer {
+      margin: 2rem auto;
+      width: 600px;
+      height: 800px;
       border: 2px solid #ff6600;
       border-radius: 10px;
-      background: radial-gradient(circle, #ffffff, #e6e6e6);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      background: #e6e6e6;
+      position: relative;
     }
-    #plinkoCanvas {
-      background: transparent;
+    /* Leaderboard and Daily Earnings */
+    .leaderboard,
+    .daily-earnings {
+      margin-top: 2rem;
+    }
+    .toggle-group button {
+      margin: 0 0.5rem;
+    }
+    /* Controls */
+    #controls {
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">CLC</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item"><a class="nav-link" href="staking.html">Stake</a></li>
-          <li class="nav-item"><a class="nav-link active" href="plinko.html">Plinko</a></li>
-          <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
-          <li class="nav-item"><a class="nav-link" href="sweepstakes.html">Sweepstakes</a></li>
-          <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
-        </ul>
+      <a class="navbar-brand" href="index.html">CLC</a>
+      <div class="ms-auto">
+        <button class="btn btn-custom" onclick="connectWallet()">Connect Wallet</button>
       </div>
-      <button class="btn btn-warning">Connect Wallet</button>
     </div>
   </nav>
 
-  <main class="container text-center mt-5">
-    <h2 class="text-white">Play Plinko</h2>
-    <div class="mb-3">
-      <label for="betAmount" class="form-label">Bet Amount per Ball (CLC):</label>
-      <input type="number" id="betAmount" class="form-control" style="max-width: 300px; margin: auto;" required>
+  <!-- Main Content -->
+  <main class="container">
+    <h2 class="text-center mb-4">Plinko Game</h2>
+    <!-- Controls for bet and number of balls -->
+    <div id="controls" class="row mb-4">
+      <div class="col-md-6">
+        <label for="betAmount" class="form-label">Bet Amount per Ball (CLC):</label>
+        <input
+          type="number"
+          id="betAmount"
+          class="form-control"
+          min="1"
+          placeholder="Enter bet amount"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="numBalls" class="form-label">Number of Balls:</label>
+        <input
+          type="number"
+          id="numBalls"
+          class="form-control"
+          min="1"
+          value="1"
+          required
+        />
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="numBalls" class="form-label">Number of Balls:</label>
-      <input type="number" id="numBalls" class="form-control" style="max-width: 300px; margin: auto;" value="1" required>
+    <div class="text-center mb-4">
+      <button class="btn btn-primary" id="playButton">Play Plinko</button>
     </div>
-    <button class="btn btn-primary mb-3" onclick="startPlinko()">Play Plinko</button>
-    <div id="plinkoBoard" class="mb-3">
-      <canvas id="plinkoCanvas" width="300" height="400"></canvas>
-    </div>
-    <p id="plinkoOutcome" class="mt-3 text-info"></p>
+    <!-- Matter.js simulation container -->
+    <div id="plinkoContainer"></div>
+    <p id="plinkoOutcome" class="text-center mt-3"></p>
+
+    <!-- Leaderboard and Daily Earnings -->
+    <section class="mt-5">
+      <h3 class="text-center">Leaderboard</h3>
+      <div class="toggle-group text-center mb-3">
+        <button class="btn btn-custom" onclick="updateLeaderboard('day')">Day</button>
+        <button class="btn btn-custom" onclick="updateLeaderboard('week')">Week</button>
+        <button class="btn btn-custom" onclick="updateLeaderboard('month')">Month</button>
+        <button class="btn btn-custom" onclick="updateLeaderboard('year')">Year</button>
+      </div>
+      <div id="leaderboardTable" class="table-responsive">
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Wallet Address</th>
+              <th>Earnings (CLC)</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table>
+      </div>
+      <section class="daily-earnings text-center mt-5">
+        <h3>Today's Earnings</h3>
+        <p id="dailyEarnings">0.00 CLC</p>
+      </section>
+    </section>
   </main>
 
+  <!-- Footer -->
   <footer>
     <p>© 2025 Collective Coin | All Rights Reserved</p>
   </footer>
 
-  <!-- Inline JS for Plinko -->
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    function startPlinko() {
+    // Matter.js aliases
+    const Engine = Matter.Engine,
+      Render = Matter.Render,
+      Runner = Matter.Runner,
+      World = Matter.World,
+      Bodies = Matter.Bodies,
+      Body = Matter.Body,
+      Events = Matter.Events,
+      Mouse = Matter.Mouse,
+      MouseConstraint = Matter.MouseConstraint,
+      Composite = Matter.Composite; // <-- Make sure to include this
+
+    let engine, world, render, runner;
+    const canvasWidth = 600,
+      canvasHeight = 800;
+    let pegs = [],
+      baskets = [];
+
+    // Initialize Matter.js simulation
+    function initMatter() {
+      engine = Engine.create();
+      world = engine.world;
+      world.gravity.y = 1.0; // Adjust gravity as needed
+
+      render = Render.create({
+        element: document.getElementById("plinkoContainer"),
+        engine: engine,
+        options: {
+          width: canvasWidth,
+          height: canvasHeight,
+          wireframes: false,
+          background: "#e6e6e6",
+        },
+      });
+      Render.run(render);
+      runner = Runner.create();
+      Runner.run(runner, engine);
+
+      // Create boundaries: left, right, ceiling, and floor
+      const boundaries = [
+        Bodies.rectangle(canvasWidth / 2, -10, canvasWidth, 20, {
+          isStatic: true,
+        }),
+        Bodies.rectangle(-10, canvasHeight / 2, 20, canvasHeight, {
+          isStatic: true,
+        }),
+        Bodies.rectangle(canvasWidth + 10, canvasHeight / 2, 20, canvasHeight, {
+          isStatic: true,
+        }),
+        Bodies.rectangle(canvasWidth / 2, canvasHeight - 10, canvasWidth, 20, {
+          isStatic: true,
+        }),
+      ];
+      World.add(world, boundaries);
+
+      // Create 10 baskets along the bottom with random multipliers
+      baskets = [];
+      const basketCount = 10;
+      const basketWidth = canvasWidth / basketCount;
+      for (let i = 0; i < basketCount; i++) {
+        let multiplier = (Math.random() * 3 + 0.5).toFixed(1); // multiplier between 0.5 and 3.5
+        let basket = Bodies.rectangle(
+          basketWidth * i + basketWidth / 2,
+          canvasHeight - 30,
+          basketWidth - 2,
+          20,
+          {
+            isStatic: true,
+            render: { fillStyle: "#00bcd4" },
+            label: "basket",
+          }
+        );
+        basket.multiplier = parseFloat(multiplier);
+        baskets.push(basket);
+      }
+      World.add(world, baskets);
+
+      // Create staggered pegs (10 rows, 12 columns)
+      pegs = [];
+      const pegRows = 10,
+        pegCols = 12,
+        pegRadius = 5;
+      const spacingX = canvasWidth / (pegCols + 1);
+      const spacingY = (canvasHeight - 200) / pegRows;
+      for (let row = 0; row < pegRows; row++) {
+        let offsetX = row % 2 === 0 ? spacingX / 2 : 0;
+        for (let col = 0; col < pegCols; col++) {
+          let x = (col + 1) * spacingX + offsetX;
+          let y = 100 + row * spacingY;
+          let peg = Bodies.circle(x, y, pegRadius, {
+            isStatic: true,
+            restitution: 0.5,
+            friction: 0,
+            render: { fillStyle: "#ff6600" },
+          });
+          pegs.push(peg);
+        }
+      }
+      World.add(world, pegs);
+
+      // Add mouse control (optional) for manual ball dropping
+      const mouse = Mouse.create(render.canvas);
+      const mouseConstraint = MouseConstraint.create(engine, {
+        mouse: mouse,
+        constraint: { stiffness: 0.2, render: { visible: false } },
+      });
+      World.add(world, mouseConstraint);
+      render.mouse = mouse;
+
+      // When a ball collides with a basket, set it to static so it sticks
+      Events.on(engine, "collisionStart", function (event) {
+        event.pairs.forEach((pair) => {
+          if (
+            (pair.bodyA.label === "ball" && pair.bodyB.label === "basket") ||
+            (pair.bodyB.label === "ball" && pair.bodyA.label === "basket")
+          ) {
+            let ball =
+              pair.bodyA.label === "ball" ? pair.bodyA : pair.bodyB;
+            Body.setStatic(ball, true);
+          }
+        });
+      });
+    }
+
+    // Drop a ball at given (x, y)
+    function dropBall(x, y) {
+      let ball = Bodies.circle(x, y, 10, {
+        restitution: 0.5,
+        friction: 0.001,
+        label: "ball",
+        render: { fillStyle: "#ff6600" },
+      });
+      World.add(world, ball);
+    }
+
+    // "Play Plinko" button logic
+    document.getElementById("playButton").addEventListener("click", function () {
+      // Clear previous simulation and reinitialize
+      Composite.clear(world, false); // <-- Requires "Composite = Matter.Composite"
+      Engine.clear(engine);
+      initMatter();
+
       const bet = parseFloat(document.getElementById("betAmount").value);
       const numBalls = parseInt(document.getElementById("numBalls").value);
       const outcomeEl = document.getElementById("plinkoOutcome");
-
       if (isNaN(bet) || bet <= 0 || isNaN(numBalls) || numBalls <= 0) {
-        outcomeEl.innerText = "Please enter a valid bet amount and number of balls.";
+        outcomeEl.innerText =
+          "Bet and number of balls must be greater than zero.";
         return;
       }
+      outcomeEl.innerText = `Playing Plinko with ${numBalls} ball(s) at ${bet} CLC each.`;
 
-      outcomeEl.innerText = `Playing Plinko with ${numBalls} ball(s) at ${bet} CLC each (dummy).`;
-
-      const canvas = document.getElementById("plinkoCanvas");
-      const ctx = canvas.getContext("2d");
-      const boardHeight = canvas.height;
-
-      // Create an array for ball data
-      let balls = [];
+      // Drop the specified number of balls from x=300, y=20 with slight horizontal variation
       for (let i = 0; i < numBalls; i++) {
-        const x = 150 + (i - (numBalls - 1) / 2) * 20;
-        balls.push({ x, y: 0, velocity: 0, finished: false, multiplier: 1 });
+        dropBall(300 + (Math.random() * 50 - 25), 20);
       }
 
-      let allFinished = false;
-      let totalWinnings = 0;
-
-      function drawBoard() {
-        ctx.fillStyle = "#ff6600";
-        const pegPositions = [50, 100, 150, 200, 250];
-        for (let y = 50; y < boardHeight - 50; y += 50) {
-          pegPositions.forEach(x => {
-            ctx.beginPath();
-            ctx.arc(x, y, 4, 0, Math.PI * 2);
-            ctx.fill();
-          });
-        }
-      }
-
-      function updateBalls() {
-        allFinished = true;
-        balls.forEach(ball => {
-          if (!ball.finished) {
-            ball.velocity += 0.5; // gravity
-            ball.y += ball.velocity;
-            if (ball.y >= boardHeight - 10) {
-              ball.y = boardHeight - 10;
-              ball.velocity = -ball.velocity * 0.6;
-              if (Math.abs(ball.velocity) < 1) {
-                ball.finished = true;
-                // Probability-based outcome
-                const randVal = Math.random() * 100;
-                if (randVal < 10) ball.multiplier = 0.0;
-                else if (randVal < 30) ball.multiplier = 1.0;
-                else if (randVal < 70) ball.multiplier = 1.5;
-                else if (randVal < 90) ball.multiplier = 2.0;
-                else ball.multiplier = 3.0;
-              }
-            }
-          }
-          if (!ball.finished) {
-            allFinished = false;
+      // After 15 seconds, compute dummy winnings
+      setTimeout(function () {
+        let totalWinnings = 0;
+        Composite.allBodies(world).forEach((body) => {
+          if (body.label === "ball" && body.isStatic && body.basket) {
+            totalWinnings += bet * body.basket.multiplier;
           }
         });
-      }
+        outcomeEl.innerText = `All balls complete! Total dummy winnings: ${totalWinnings.toFixed(2)} CLC.`;
+        document.getElementById("dailyEarnings").innerText = `${(
+          Math.random() * 100
+        ).toFixed(2)} CLC`;
+        updateLeaderboard("day");
+      }, 15000);
+    });
 
-      function drawBalls() {
-        balls.forEach(ball => {
-          ctx.beginPath();
-          ctx.arc(ball.x, ball.y, 10, 0, Math.PI * 2);
-          ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-          ctx.shadowBlur = 10;
-          ctx.fillStyle = "#ff6600";
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        });
-      }
-
-      function animationLoop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawBoard();
-        updateBalls();
-        drawBalls();
-
-        if (!allFinished) {
-          requestAnimationFrame(animationLoop);
-        } else {
-          // All balls finished
-          balls.forEach(ball => {
-            totalWinnings += bet * ball.multiplier;
-          });
-          outcomeEl.innerText = `All balls complete! Total (dummy) winnings: ${totalWinnings.toFixed(2)} CLC.`;
-        }
-      }
-
-      animationLoop();
+    // Dummy leaderboard data
+    const leaderboardData = {
+      day: [
+        { wallet: "0xABC123...XYZ", earnings: 12.34 },
+        { wallet: "0xDEF456...UVW", earnings: 9.87 },
+        { wallet: "0xGHI789...RST", earnings: 8.76 },
+      ],
+      week: [
+        { wallet: "0xABC123...XYZ", earnings: 56.78 },
+        { wallet: "0xDEF456...UVW", earnings: 45.67 },
+        { wallet: "0xGHI789...RST", earnings: 34.56 },
+      ],
+      month: [
+        { wallet: "0xABC123...XYZ", earnings: 234.56 },
+        { wallet: "0xDEF456...UVW", earnings: 210.0 },
+        { wallet: "0xGHI789...RST", earnings: 198.76 },
+      ],
+      year: [
+        { wallet: "0xABC123...XYZ", earnings: 1234.56 },
+        { wallet: "0xDEF456...UVW", earnings: 1100.0 },
+        { wallet: "0xGHI789...RST", earnings: 987.65 },
+      ],
+    };
+    function updateLeaderboard(timeFrame) {
+      const tbody = document.getElementById("leaderboardBody");
+      const data = leaderboardData[timeFrame];
+      tbody.innerHTML = data
+        .map(
+          (entry) =>
+            `<tr><td>${entry.wallet}</td><td>${entry.earnings.toFixed(
+              2
+            )} CLC</td></tr>`
+        )
+        .join("");
     }
-  </script>
+    function connectWallet() {
+      alert("Connect wallet (dummy).");
+    }
 
-  <!-- Bootstrap JS Bundle -->
-  <script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    // Initialize simulation on page load
+    initMatter();
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
