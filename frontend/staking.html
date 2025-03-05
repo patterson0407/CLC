@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Collective Coin | Staking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Orbitron & Bootstrap CSS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <!-- Chart.js for the rewards chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <!-- Local Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Navbar (reuse from your project) -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">CLC</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="staking.html">Stake</a></li>
+          <li class="nav-item"><a class="nav-link" href="plinko.html">Plinko</a></li>
+          <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+          <li class="nav-item"><a class="nav-link" href="sweepstakes.html">Sweepstakes</a></li>
+  
+        </ul>
+      </div>
+      <button class="btn btn-custom ms-3" onclick="connectWallet()">Connect Wallet</button>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="container mt-5">
+    <h2 class="text-center mb-4">Stake Your CLC</h2>
+    <p class="text-center">
+      Enter an amount of CLC to stake, and watch your daily reward updates on the chart below. 
+      In a real deployment, you'd call a smart contract for actual staking & reward calculations.
+    </p>
+
+    <form id="stakeForm" class="bg-dark p-4 rounded shadow text-white mb-4" style="max-width: 600px; margin: auto;">
+      <div class="mb-3">
+        <label for="stakeAmount" class="form-label">Amount to Stake (CLC):</label>
+        <input type="number" id="stakeAmount" class="form-control" min="1" required />
+      </div>
+      <button type="submit" class="btn btn-success me-2">Stake</button>
+      <button type="button" class="btn btn-danger" onclick="unstakeTokens()">Unstake</button>
+    </form>
+    <p id="stakeMessage" class="text-center mt-3 text-white fs-5"></p>
+
+    <div class="mt-5">
+      <h4 class="text-center">Staking Rewards Over Time</h4>
+      <canvas id="stakingChart" width="600" height="300"></canvas>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Collective Coin | All Rights Reserved</p>
+  </footer>
+
+  <!-- Bootstrap Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Local Staking JS -->
+  <script src="js/staking.js"></script>
+</body>
+</html>
+
+

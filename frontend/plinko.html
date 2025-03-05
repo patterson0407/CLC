@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Collective Coin | Plinko with Visible Multipliers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font: Orbitron -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
+
+  <!-- Bootstrap 5 (CDN) -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  />
+
+  <!-- Local Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">CLC</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="staking.html">Stake</a></li>
+          <li class="nav-item"><a class="nav-link" href="plinko.html">Plinko</a></li>
+          <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+          <li class="nav-item"><a class="nav-link" href="sweepstakes.html">Sweepstakes</a></li>
+        </ul>
+      </div>
+      <button class="btn btn-custom ms-3" onclick="connectWallet()">Connect Wallet</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <h1 class="text-center mt-4">Plinko</h1>
+    <p class="text-center">
+      Enter your bet per ball (CLC) and number of balls (1–10). Some baskets may have negative or zero multipliers.
+    </p>
+
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-3">
+        <label for="betAmount" class="form-label">Bet per Ball (CLC):</label>
+        <input
+          type="number"
+          id="betAmount"
+          class="form-control"
+          placeholder="CLC"
+          min="1"
+          value="10"
+        />
+      </div>
+      <div class="col-md-3">
+        <label for="numBalls" class="form-label">Number of Balls:</label>
+        <input
+          type="number"
+          id="numBalls"
+          class="form-control"
+          placeholder="# of Balls"
+          min="1"
+          max="10"
+          value="3"
+        />
+      </div>
+      <div class="col-md-2 align-self-end">
+        <button id="playBtn" class="btn btn-primary w-100 mt-2">
+          Play Plinko
+        </button>
+      </div>
+    </div>
+
+    <h4 class="text-center">Running Total:</h4>
+    <p id="scoreboard" class="text-center fs-5">0.00 CLC</p>
+
+    <!-- The Plinko container -->
+    <div class="plinko-container">
+      <canvas id="plinkoCanvas" width="800" height="700"></canvas>
+    </div>
+
+    <!-- Basket multipliers row -->
+    <div id="basketLabels" class="d-flex justify-content-around mt-2"></div>
+
+    <p id="plinkoOutcome" class="text-center mt-3"></p>
+  </main>
+
+  <footer>
+    <p>© 2025 Collective Coin | All Rights Reserved</p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
+  <!-- Matter.js (no integrity to avoid blocking) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
+  <!-- Local Plinko JS -->
+  <script src="js/plinko.js"></script>
+</body>
+</html>

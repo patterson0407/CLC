@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Collective Coin | Sweepstakes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Font & Bootstrap CSS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">CLC</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="staking.html">Stake</a></li>
+          <li class="nav-item"><a class="nav-link" href="plinko.html">Plinko</a></li>
+          <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+          <li class="nav-item"><a class="nav-link active" href="sweepstakes.html">Sweepstakes</a></li>
+        </ul>
+      </div>
+      <button id="connectWalletBtn" class="btn btn-custom ms-3">Connect Wallet</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mt-5 text-center">
+    <h2>CLC Sweepstakes</h2>
+    <p>Enter the sweepstakes for a chance to win exclusive rewards!</p>
+
+    <div class="row mt-4 justify-content-center">
+      <!-- Physical Luxury Item Sweepstakes -->
+      <div class="col-md-5">
+        <div class="card bg-dark text-light">
+          <img src="assets/download (3).jpg" class="card-img-top" alt="Luxury Watch">
+          <div class="card-body">
+            <h5 class="card-title">Win a Luxury Watch!</h5>
+            <p class="card-text">Enter to win a premium Rolex watch. Stake CLC to participate.</p>
+            <button class="btn btn-primary" onclick="enterPhysicalSweepstakes()">Enter Sweepstakes</button>
+            <p id="physicalOutcome" class="mt-2"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Crypto Reward Sweepstakes -->
+      <div class="col-md-5">
+        <div class="card bg-dark text-light">
+          <img src="assets/download (4).jpg" class="card-img-top" alt="Bitcoin Reward">
+          <div class="card-body">
+            <h5 class="card-title">Win Crypto Rewards!</h5>
+            <p class="card-text">Win 0.01 BTC or 0.1 ETH! Stake CLC to enter.</p>
+            <button class="btn btn-primary" onclick="enterCryptoSweepstakes()">Enter Sweepstakes</button>
+            <p id="cryptoOutcome" class="mt-2"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Collective Coin | All Rights Reserved</p>
+  </footer>
+
+  <!-- Bootstrap & JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/wallet-connect.js" type="module"></script>
+  <script src="js/sweepstakes.js"></script>
+</body>
+</html>

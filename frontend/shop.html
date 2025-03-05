@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Collective Coin | Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Font & Bootstrap CSS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">CLC</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="staking.html">Stake</a></li>
+          <li class="nav-item"><a class="nav-link" href="plinko.html">Plinko</a></li>
+          <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+          <li class="nav-item"><a class="nav-link" href="sweepstakes.html">Sweepstakes</a></li>
+        </ul>
+      </div>
+      <button class="btn btn-custom ms-3" onclick="connectWallet()">Connect Wallet</button>
+    </div>
+  </nav>
+
+  <main class="container mt-5">
+    <h2 class="text-center">CLC Shop</h2>
+    <p class="text-center">Browse exclusive merchandise (dummy data).</p>
+    <div class="row" id="productList"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 Collective Coin | All Rights Reserved</p>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Navbar & Shop JS -->
+  <script src="js/navbar.js"></script>
+  <script src="js/shop.js"></script>
+</body>
+</html>
